@@ -10,18 +10,13 @@
 
 *Office hours from 4 - 5 pm all three days.*
 
-
----
-
-## Who are we?
-
 ---
 
 # Ramona Harrison
 
 
 - Android Engineer on App Platforms :rocket:
-- 
+- Native Audio, AR, Home
 - Sits on 2S
 
 ![left](http://deckset-assets.s3-website-us-east-1.amazonaws.com/colnago1.jpg)
@@ -30,14 +25,45 @@
 
 # Akasha Archer
 
-Try it yourself and move this image to the right
 
 ![left](http://deckset-assets.s3-website-us-east-1.amazonaws.com/colnago1.jpg)
 
 ---
 
-# Himadri Narasimhamurthy and Amine Toualbi
+# Himadri Narasimhamurthy
 
-Try it yourself and move this image to the right
+# Amine Toualbi
+
 
 ![right](http://deckset-assets.s3-website-us-east-1.amazonaws.com/colnago1.jpg)
+
+---
+
+# Format
+- Live coding
+- Ask questions!
+- We'll be available here from 4 - 5 pm
+
+---
+
+# Remote Participants
+- Remote working groups
+- Ask questions!
+- We'll stay dialed in from 4 - 5 pm
+
+---
+
+# Resources
+
+- Join **#learn-android-2019** on NYTimes Slack
+- Resources at **github.com/ramonaharrison/nyt-android-workshop**
+
+---
+
+# The Goal
+
+Build a NYTimes app using the [public API](https://developer.nytimes.com/).
+
+
+
+
