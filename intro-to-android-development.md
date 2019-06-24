@@ -64,6 +64,29 @@
 
 Build a NYTimes app using the [public API](https://developer.nytimes.com/).
 
+---
+
+# Creating a project
+- Open Android Studio
+- "Start a new Android Studio project"
+- "Empty Activity"
+
+---
+
+# Configure the project
+
+![inline](images/configure-the-project.png)
+
+---
+
+# Getting around Android Studio
+1. Project panel
+2. Run button
+3. Emulator
+
+---
+
+
 
 
 
