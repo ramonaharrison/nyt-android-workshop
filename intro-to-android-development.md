@@ -463,6 +463,212 @@ In StoryActivity.kt
 
 ---
 
+# Let's get some real data!
+
+We want to...
+
+* Make a network request to the NYTimes Public API
+* Get back a list of items ranked in Top Stories
+* Parse these items to display in our RecyclerView
+
+---
+
+# Some tools we'll use
+
+* OkHttp - HTTP client for Android/Java/Kotlin.
+* Retrofit - adapts REST interfaces so they can be treated like callable Java/Kotlin objects.
+* Moshi - parses JSON in Java/Kotlin data objects.
+* Coroutines - Kotlin language-level support for writing asynchronous code.
+
+---
+
+# Add the kapt plugin
+
+In app/build.gradle
+
+```groovy
+apply plugin: 'kotlin-kapt'
+```
+
+---
+
+# Add the dependencies
+
+In app/build.gradle
+
+```groovy
+dependencies {
+    //...
+
+    def okhttp3_version = "3.12.0"
+    def retrofit2_version = "2.5.0"
+    def moshiVersion="1.8.0"
+    def kotlinCoroutineVersion = "1.0.1"
+
+    // OkHttp
+    implementation "com.squareup.okhttp3:okhttp:$okhttp3_version"
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
+    
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit2_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit2_version"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
+    
+    // Moshi
+    implementation "com.squareup.moshi:moshi-kotlin:$moshiVersion"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion"
+
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutineVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutineVersion"
+}
+```
+
+---
+
+# Add the API key in a file that is not checked in to source control
+
+In local.properties
+
+```groovy
+//...
+apikey="paste the api key here"
+```
+
+---
+
+# Compile the key into the project
+
+In app/build.gradle
+
+```groovy
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
+android {
+	//...
+    defaultConfig {
+    	//...
+        buildConfigField "String", "API_KEY", localProperties['apiKey']
+    }
+
+}
+
+```
+
+---
+
+# Create Kotlin data classes to represent the API response
+
+Create a new class Section.kt
+
+```kotlin
+@JsonClass(generateAdapter = true)
+data class Section(val results: List<Result>)
+
+@JsonClass(generateAdapter = true)
+data class Result(val title: String,
+                  val abstract: String,
+                  val url: String,
+                  val multimedia: List<Multimedia>)
+
+@JsonClass(generateAdapter = true)
+data class Multimedia(val format: String,
+                      val url: String)
+```
+
+--- 
+
+# Create a Kotlin interface to represent the Top Stories API
+
+Create a new class TopStoriesApi.kt
+
+```kotlin
+interface TopStoriesApi {
+
+    @GET("/svc/topstories/v2/{section}.json")
+    fun getSection(
+        @Path("section") section: String,
+        @Query("api-key") apiKey: String
+    ): Deferred<Response<Section>>
+}
+```
+
+---
+
+# Create a singleton factory to provide an instance of TopStoriesApi
+
+---
+
+In TopStoriesApi.kt
+
+```kotlin
+object ApiFactory {
+    fun retrofit(): Retrofit = Retrofit.Builder()
+        .client(OkHttpClient().newBuilder().build())
+        .baseUrl("https://api.nytimes.com")
+        .addConverterFactory(MoshiConverterFactory.create())
+        .addCallAdapterFactory(CoroutineCallAdapterFactory())
+        .build()
+
+    val topStoriesApi: TopStoriesApi = retrofit().create(TopStoriesApi::class.java)
+}
+```
+
+---
+
+# Launch a coroutine to make the post request
+
+In MainActivity.kt
+
+```kotlin
+    fun updateNews() {
+        val service = ApiFactory.topStoriesApi
+        GlobalScope.launch(Dispatchers.Main) {
+            val postRequest = service.getSection("science", BuildConfig.API_KEY)
+            
+        }
+    }
+```
+
+---
+
+# Execute the request and show an error if something goes wrong
+
+```kotlin
+
+In MainActivity.kt
+
+val postRequest = service.getSection("science", BuildConfig.API_KEY)
+try {
+    val response = postRequest.await()
+    
+} catch (e: Exception) {
+    Toast.makeText(baseContext, "Something went wrong.", Toast.LENGTH_LONG).show()
+}
+
+```
+---
+
+# Convert the data from the response so that it can be used by the NewsAdapter
+
+In MainActivity.kt
+
+```kotlin
+val response = postRequest.await()
+response.body()?.let { section ->
+	val news = section.results.map { result ->
+		NewsStory(headline = result.title,
+			summary = result.abstract,
+			imageUrl = result.multimedia.firstOrNull { it.format == "superJumbo" }?.url,
+			clickUrl = result.url)
+	}
+	adapter.updateNews(news)
+}
+```
+
+---
+
 
 
 
