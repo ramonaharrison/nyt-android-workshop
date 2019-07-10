@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9791d85c-ef2c-457b-b171-77bed706df15" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/MiniNYTimes/app/src/main/java/com/ramonaharrison/mininytimes/NewsAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MiniNYTimes/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/MiniNYTimes/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MiniNYTimes/app/src/main/java/com/ramonaharrison/mininytimes/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/MiniNYTimes/app/src/main/java/com/ramonaharrison/mininytimes/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MiniNYTimes/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MiniNYTimes/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/intro-to-android-development.md" beforeDir="false" afterPath="$PROJECT_DIR$/intro-to-android-development.md" afterDir="false" />
-    </list>
+    <list default="true" id="9791d85c-ef2c-457b-b171-77bed706df15" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,12 +9,15 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/MiniNYTimes/app/src/main/java/com/ramonaharrison/mininytimes/NewsAdapter.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="8" column="54" selection-start-line="8" selection-start-column="54" selection-end-line="8" selection-end-column="54" />
+            <state relative-caret-position="351">
+              <caret line="31" column="24" lean-forward="true" selection-start-line="31" selection-start-column="24" selection-end-line="31" selection-end-column="24" />
+              <folding>
+                <element signature="e#40#328#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -37,17 +34,17 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="210" />
-    <option name="y" value="151" />
-    <option name="width" value="1260" />
-    <option name="height" value="771" />
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
+    <option name="width" value="1680" />
+    <option name="height" value="970" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -133,7 +130,6 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -214,11 +210,11 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1680" height="1027" extended-state="6" />
+    <frame x="0" y="23" width="1680" height="970" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" weight="0.25" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.27078238" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.22799511" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Designer" order="4" />
@@ -238,8 +234,11 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/MiniNYTimes/app/src/main/java/com/ramonaharrison/mininytimes/NewsAdapter.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="8" column="54" selection-start-line="8" selection-start-column="54" selection-end-line="8" selection-end-column="54" />
+        <state relative-caret-position="351">
+          <caret line="31" column="24" lean-forward="true" selection-start-line="31" selection-start-column="24" selection-end-line="31" selection-end-column="24" />
+          <folding>
+            <element signature="e#40#328#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -379,6 +379,21 @@ Then do a Gradle sync.
 
 ---
 
+# Add internet permission
+
+In AndroidManifest.xml
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.ramonaharrison.mininytimes">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    //...
+```
+
+---
+
 # Load the image URL in the ImageView
 
 In NewsAdapter.kt
@@ -406,6 +421,44 @@ In NewsAdapter.kt
             Toast.makeText(context, news[position].headline, Toast.LENGTH_LONG).show()
         }
     }
+```
+
+---
+
+# Create a new activity to show a story
+
+* Create a new "Empty Activity" called StoryActivity
+* Add a WebView to `activity_story.xml`
+
+---
+
+# Navigate to the activity when a story is clicked
+
+In NewsAdapter.kt
+
+```kotlin
+    holder.itemView.setOnClickListener {
+        val intent = Intent(context, StoryActivity::class.java)
+        intent.putExtra("url", news[position].clickUrl)
+        context.startActivity(intent)
+    }
+
+```
+
+---
+
+# Load the URL in the WebView
+
+In StoryActivity.kt
+
+```kotlin
+    override fun onCreate(savedInstanceState: Bundle?) {
+        //..
+
+        val url = intent.extras["url"] as String
+        storyWebView.loadUrl(url)
+    }
+
 ```
 
 ---

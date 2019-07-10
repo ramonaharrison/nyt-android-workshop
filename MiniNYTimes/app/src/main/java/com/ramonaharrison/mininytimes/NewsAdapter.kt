@@ -1,10 +1,10 @@
 package com.ramonaharrison.mininytimes
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_news.view.*
@@ -39,7 +39,9 @@ class NewsAdapter(val context: Context) : RecyclerView.Adapter<NewsAdapter.NewsV
         Picasso.get().load(news[position].imageUrl).into(holder.itemView.imageView)
 
         holder.itemView.setOnClickListener {
-            Toast.makeText(context, news[position].headline, Toast.LENGTH_LONG).show()
+            val intent = Intent(context, StoryActivity::class.java)
+            intent.putExtra("url", news[position].clickUrl)
+            context.startActivity(intent)
         }
     }
 }

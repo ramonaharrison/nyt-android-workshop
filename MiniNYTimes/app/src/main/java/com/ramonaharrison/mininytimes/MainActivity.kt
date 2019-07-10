@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
             NewsStory(
                 headline = "Crocodiles Went Through a Vegetarian Phase, Too",
                 summary = "Ancestors of modern crocodiles evolved to survive on a plant diet at least three times, researchers say.",
-                imageUrl = "https://square.github.io/picasso/static/sample.png",
+                imageUrl = "https://static01.nyt.com/images/2019/07/09/science/27TB-VEGGIECROC1/27TB-VEGGIECROC1-videoLarge.jpg",
                 clickUrl = "https://www.nytimes.com/2019/06/27/science/crocodiles-vegetarian-teeth.html"),
 
             NewsStory(
