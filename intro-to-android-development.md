@@ -598,8 +598,6 @@ interface TopStoriesApi {
 
 # Create a singleton factory to provide an instance of TopStoriesApi
 
----
-
 In TopStoriesApi.kt
 
 ```kotlin
