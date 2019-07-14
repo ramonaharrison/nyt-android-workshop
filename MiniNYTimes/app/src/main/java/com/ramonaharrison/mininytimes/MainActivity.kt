@@ -4,7 +4,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -12,7 +13,14 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var recyclerView: RecyclerView
+    val sections = mapOf(
+            "Home" to "home",
+            "Opinion" to "opinion",
+            "Food" to "food",
+            "Science" to "science",
+            "Travel" to "travel"
+    )
+
     lateinit var adapter: NewsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,26 +28,49 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         adapter = NewsAdapter(this)
 
-
-        recyclerView = findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        updateNews()
+        setupSections()
+
+        val selected = tabLayout.getTabAt(tabLayout.selectedTabPosition)!!.text
+        updateNews(sections[selected]!!)
     }
 
-    fun updateNews() {
+    fun setupSections() {
+        for (key in sections.keys) {
+            tabLayout.addTab(tabLayout.newTab().setText(key))
+        }
+
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(p0: TabLayout.Tab) {
+
+            }
+
+            override fun onTabUnselected(p0: TabLayout.Tab) {
+
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                updateNews(sections[tab.text]!!)
+                recyclerView.scrollToPosition(0)
+            }
+        })
+    }
+
+    fun updateNews(path: String) {
         val service = ApiFactory.topStoriesApi
         GlobalScope.launch(Dispatchers.Main) {
-            val postRequest = service.getSection("science", BuildConfig.API_KEY)
+            val postRequest = service.getSection(path, BuildConfig.API_KEY)
             try {
                 val response = postRequest.await()
                 response.body()?.let { section ->
                     val news = section.results.map { result ->
-                        NewsStory(headline = result.title,
-                            summary = result.abstract,
-                            imageUrl = result.multimedia.firstOrNull { it.format == "superJumbo" }?.url,
-                            clickUrl = result.url)
+                        NewsStory(
+                                headline = result.title,
+                                summary = result.abstract,
+                                imageUrl = result.multimedia.firstOrNull { it.format == "superJumbo" }?.url,
+                                clickUrl = result.url)
                     }
                     adapter.updateNews(news)
                 }

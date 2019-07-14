@@ -143,7 +143,7 @@ https://developer.nytimes.com/
 - From activity_main.xml, open the "Design" tab
 - Delete the `TextView`
 - Drag to add a `RecyclerView`
-- Give it an id: `recycler_view`
+- Give it an id: `recyclerView`
 
 ---
 
@@ -157,15 +157,15 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
     class NewsViewHolder(val headline: TextView) : RecyclerView.ViewHolder(headline)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
-
+        // Called when a new, empty view is created
     }
 
     override fun getItemCount(): Int {
-
+        // Tells the recycler view how many items to display
     }
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
-
+        // Called when a view is about to be scrolled on to the screen
     }
 }
 ```
@@ -178,6 +178,7 @@ In NewsAdapter.kt
 
 ```kotlin
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
+        // Called when a new, empty view is created
         val headlineTextView = TextView(parent.context)
         return NewsViewHolder(headlineTextView)
     }
@@ -207,6 +208,7 @@ In NewsAdapter.kt
 
 ```kotlin
     override fun getItemCount(): Int {
+        // Tells the recycler view how many items to display
         return news.size
     }
 ```
@@ -219,6 +221,7 @@ In NewsAdapter.kt
 
 ```kotlin
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
+        // Called when a view is about to be scrolled on to the screen
         holder.headline.text = news[position]
     }
 ```
@@ -235,7 +238,6 @@ In MainActivity.kt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        recyclerView = findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = NewsAdapter()
     }
@@ -301,6 +303,7 @@ class NewsAdapter(val context: Context) : RecyclerView.Adapter<NewsAdapter.NewsV
     //...
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
+        // Called when a new, empty view is created
         val view = inflater.inflate(R.layout.item_news, parent, false)
         return NewsViewHolder(view)
     }
@@ -314,6 +317,7 @@ class NewsAdapter(val context: Context) : RecyclerView.Adapter<NewsAdapter.NewsV
 
 ```kotlin
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
+        // Called when a view is about to be scrolled on to the screen
         holder.itemView.headline.text = news[position]
     }
 ```
@@ -358,6 +362,7 @@ In NewsAdapter.kt
 
 ```kotlin
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
+        // Called when a view is about to be scrolled on to the screen
         holder.itemView.headline.text = news[position].headline
         holder.itemView.summary.text = news[position].summary
     }
@@ -679,10 +684,9 @@ In MainActivity.kt
 
 # Execute the request and show an error if something goes wrong
 
-```kotlin
-
 In MainActivity.kt
 
+```kotlin
 val postRequest = service.getSection("science", BuildConfig.API_KEY)
 try {
     val response = postRequest.await()
@@ -712,6 +716,117 @@ response.body()?.let { section ->
 ```
 
 ---
+
+# Add multiple sections
+
+- Add a Tab Layout
+- Make a list of sections we want to display
+- When a user clicks a tab, show that section
+
+![right 80%](images/sections.png)
+
+---
+
+# Add a Tab Layout
+
+In activity_main.xml
+
+```xml
+    <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="0dp" app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/recyclerView" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@id/tabLayout"/>
+```
+
+---
+
+# Make a list of sections
+
+In MainActivity.kt
+
+```kotlin
+    val sections = mapOf(
+            "Home" to "home",
+            "Opinion" to "opinion",
+            "Food" to "food",
+            "Science" to "science",
+            "Travel" to "travel"
+    )
+```
+
+---
+
+# Setup the Tab Layout
+
+In MainActivity.kt
+
+```kotlin
+    // Called from onCreate()
+    fun setupSections() {
+        for (key in sections.keys) {
+            tabLayout.addTab(tabLayout.newTab().setText(key))
+        }
+    }
+
+```
+
+---
+
+# Add a tab selected listener
+
+In MainActivity.kt
+
+```kotlin
+    fun setupSections() {
+        //...
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                updateNews(sections[tab.text]!!)
+                recyclerView.scrollToPosition(0)
+            }
+
+            override fun onTabReselected(p0: TabLayout.Tab) {
+                // Do nothing.
+            }
+
+            override fun onTabUnselected(p0: TabLayout.Tab) {
+                // Do nothing.
+            }
+
+        })
+    }
+
+```
+
+---
+
+# Load the right section
+
+In MainActivity.kt
+
+```kotlin
+    fun updateNews(path: String) {
+        val service = ApiFactory.topStoriesApi
+        GlobalScope.launch(Dispatchers.Main) {
+            val postRequest = service.getSection(path, BuildConfig.API_KEY)
+            //...
+
+    }
+```
+
+
+
+
+
+
 
 
 
