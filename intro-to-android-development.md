@@ -3,8 +3,10 @@
 - Welcome! :wave:
 - If you haven't already, install Android Studio: [developer.android.com/studio](developer.android.com/studio)
 - Let us know if you need help with your install.
-- Join #learn-android-2019 on NYTimes Slack.
+- Join **#learn-android-2019** on NYTimes Slack.
 - We'll get started soon!
+
+^ (do an AV check for the remote participants)
 
 ---
 
@@ -78,7 +80,7 @@
 
 ---
 
-> World's most installed operating system, 40% of all devices.
+> The world's most installed operating system, 40% of all devices.
 
 
 ![](images/jetpack.png)
@@ -127,8 +129,8 @@ https://developer.nytimes.com/
 
 # Getting around Android Studio
 - Project panel
-- Run button
 - Emulator
+- Run button
 
 ---
 
@@ -821,6 +823,41 @@ In MainActivity.kt
 
     }
 ```
+
+---
+
+# Add search
+
+- Add a button to open a new activity
+- Add an EditText, Button, and RecyclerView to the new activity
+- When the button is clicked, search and display the results
+
+---
+
+# Add a button
+
+
+
+---
+
+# Open the search activity
+
+---
+
+# Build the layout
+
+___
+
+# Add a click listener
+
+---
+
+# Integrate the Search API
+
+---
+
+---
+
 
 
 
