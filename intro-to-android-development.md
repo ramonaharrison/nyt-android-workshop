@@ -1,5 +1,17 @@
 # Android Development Workshop
 
+- Welcome! :wave:
+- If you haven't already, install Android Studio: [developer.android.com/studio](developer.android.com/studio)
+- Let us know if you need help with your install.
+- Join #learn-android-2019 on NYTimes Slack.
+- We'll get started soon!
+
+---
+
+# Android Development Workshop
+
+### Maker Week 2019
+
 ---
 
 # Series overview
@@ -12,27 +24,34 @@
 
 ---
 
-# Ramona Harrison
+# *Ramona Harrison*
 
 
 - Android Engineer on App Platforms :rocket:
-- Native Audio, AR, Home
-- Sits on 2S
+- ~2 years @ NYT.
+- I've worked on Native Audio, Augmented Reality, the Home project.
+
+
+![left](images/ramona.jpg)
+
+---
+
+# *Akasha Archer*
+
+- TKTK
+
 
 ![left](http://deckset-assets.s3-website-us-east-1.amazonaws.com/colnago1.jpg)
 
 ---
 
-# Akasha Archer
+# *Himadri Narasimhamurthy*
 
+- TKTK
 
-![left](http://deckset-assets.s3-website-us-east-1.amazonaws.com/colnago1.jpg)
+# *Amine Toualbi*
 
----
-
-# Himadri Narasimhamurthy
-
-# Amine Toualbi
+- TKTK
 
 
 ![right](http://deckset-assets.s3-website-us-east-1.amazonaws.com/colnago1.jpg)
@@ -60,9 +79,37 @@
 
 ---
 
+> World's most installed operating system, 40% of all devices.
+
+
+![](images/jetpack.png)
+
+---
+
+> 76% of global smartphones run Android.
+
+![](images/jetpack.png)
+
+---
+
+# Developing for Android
+
+- Latest version is 9.0/Pie
+- Based on the Linux kernal
+- Codebase is open source @ source.android.com
+- Apps are written in Java or Kotlin and run on a sandboxed JVM
+
+![right 80%](images/developing.png)
+
+---
+
 # The Goal
 
-Build a NYTimes app using the [public API](https://developer.nytimes.com/).
+Build a NYTimes app using the [public API](https://developer.nytimes.com/):
+
+https://developer.nytimes.com/
+
+![right 80%](images/app.png)
 
 ---
 
