@@ -66,9 +66,8 @@
 ---
 
 # Remote Participants
-- Remote working groups
-- Ask questions!
-- We'll stay dialed in from 4 - 5 pm
+- Ask questions! (We'll keep :eyes: on Slack)
+- We'll dial in for the office hours 4 - 5 pm
 
 ---
 
