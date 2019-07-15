@@ -61,10 +61,12 @@
 
 # *Amine Toualbi*
 
-- TKTK
+- I'm from France, of Algerian descent, and study in Utah.
+- I am a summer intern on the Android Platforms team.
+- I sleep with no pillow.
 
 
-![right](http://deckset-assets.s3-website-us-east-1.amazonaws.com/colnago1.jpg)
+![right](images/amine.jpg)
 
 ---
 
@@ -153,35 +155,6 @@ https://developer.nytimes.com/
 - Open activity_main.xml
 - Find the text that says "Hello World!"
 - Replace it with your own message and run the app
-
----
-
-# The activity lifecycle
-
-In MainActivity.kt
-
-```kotlin
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        Log.d("MainActivity", "onCreate() called. The activity is being freshly created.")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("MainActivity", "onPause() called. The activity is going in to the background.")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("MainActivity", "onResume() called. The activity is coming back from the background.")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("MainActivity", "onDestroy() called. The activity is going away forever.")
-    }
-```
 
 ---
 
@@ -556,6 +529,35 @@ In StoryActivity.kt
         storyWebView.loadUrl(url)
     }
 
+```
+
+---
+
+# The activity lifecycle
+
+In MainActivity.kt
+
+```kotlin
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        Log.d("MainActivity", "onCreate() called. The activity is being freshly created.")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("MainActivity", "onPause() called. The activity is going in to the background.")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("MainActivity", "onResume() called. The activity is coming back from the background.")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("MainActivity", "onDestroy() called. The activity is going away forever.")
+    }
 ```
 
 ---

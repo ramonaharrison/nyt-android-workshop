@@ -47,33 +47,6 @@ https://developer.nytimes.com/
 - Replace it with your own message and run the app
 
 
-## The activity lifecycle
-
-In MainActivity.kt
-
-```kotlin
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        Log.d("MainActivity", "onCreate() called. The activity is being freshly created.")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("MainActivity", "onPause() called. The activity is going in to the background.")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("MainActivity", "onResume() called. The activity is coming back from the background.")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("MainActivity", "onDestroy() called. The activity is going away forever.")
-    }
-```
-
 ## Displaying a list
 
 - From activity_main.xml, open the "Design" tab
@@ -424,4 +397,31 @@ In StoryActivity.kt
         storyWebView.loadUrl(url)
     }
 
+```
+
+## The activity lifecycle
+
+In MainActivity.kt
+
+```kotlin
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        Log.d("MainActivity", "onCreate() called. The activity is being freshly created.")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("MainActivity", "onPause() called. The activity is going in to the background.")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("MainActivity", "onResume() called. The activity is coming back from the background.")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("MainActivity", "onDestroy() called. The activity is going away forever.")
+    }
 ```
