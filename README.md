@@ -12,7 +12,7 @@ Build a NYTimes app using the [public API](https://developer.nytimes.com/):
 
 https://developer.nytimes.com/
 
-![right 80%](images/app.png | width=100)
+<img src="images/app.png" width="100">
 
 
 ## Creating a project
