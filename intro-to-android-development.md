@@ -40,16 +40,24 @@
 
 # *Akasha Archer*
 
-- TKTK
+- Joined the Times in July 2018
+- Android developer on the Discovery team
+- Fun fact: Akasha has never had chicken pox
 
 
-![left](http://deckset-assets.s3-website-us-east-1.amazonaws.com/colnago1.jpg)
+![left](images/akasha.jpg)
 
 ---
 
 # *Himadri Narasimhamurthy*
 
-- TKTK
+- Android Engineering Intern on App Platforms
+- Rising senior at Dartmouth College
+- Fun fact: after I finish interning, I’m heading to Italy to learn how to make pasta!
+
+![right](images/himadri.jpg)
+
+---
 
 # *Amine Toualbi*
 
@@ -60,9 +68,16 @@
 
 ---
 
+> :raising_hand: :raising_hand: :raising_hand:
+
+^ Show of hands: how many people do something other than write code for their day job? Is anyone here writing code for the first time?
+
+---
+
 # Format
 - Live coding
 - Ask questions!
+- Quick break @ 3 pm
 - We'll be available here from 4 - 5 pm
 
 ---
@@ -138,6 +153,35 @@ https://developer.nytimes.com/
 - Open activity_main.xml
 - Find the text that says "Hello World!"
 - Replace it with your own message and run the app
+
+---
+
+# The activity lifecycle
+
+In MainActivity.kt
+
+```kotlin
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        Log.d("MainActivity", "onCreate() called. The activity is being freshly created.")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("MainActivity", "onPause() called. The activity is going in to the background.")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("MainActivity", "onResume() called. The activity is coming back from the background.")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("MainActivity", "onDestroy() called. The activity is going away forever.")
+    }
+```
 
 ---
 
@@ -823,51 +867,3 @@ In MainActivity.kt
 
     }
 ```
-
----
-
-# Add search
-
-- Add a button to open a new activity
-- Add an EditText, Button, and RecyclerView to the new activity
-- When the button is clicked, search and display the results
-
----
-
-# Add a button
-
-
-
----
-
-# Open the search activity
-
----
-
-# Build the layout
-
-___
-
-# Add a click listener
-
----
-
-# Integrate the Search API
-
----
-
----
-
-
-
-
-
-
-
-
-
-
-
-
-
-
