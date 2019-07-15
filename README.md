@@ -1,29 +1,44 @@
+# Android Development Workshop
+
+- Monday 2 - 4 p.m.: Intro to Android Development - 15W2-115
+- Tuesday 2 - 4 p.m.: Kotlin for Android Development - 15W2-115
+- Wednesday 2 - 4 p.m.: Advanced Android - 12E2-140
+
+*Office hours from 4 - 5 pm each day.*
+
 ## The Goal
 
-Build a NYTimes app using the [public API](https://developer.nytimes.com/).
+Build a NYTimes app using the [public API](https://developer.nytimes.com/):
 
----
+https://developer.nytimes.com/
+
+![right 80%](images/app.png)
+
 
 ## Creating a project
-
 - Open Android Studio
 - "Start a new Android Studio project"
 - "Empty Activity"
 
----
 
 ## Configure the project
 
 ![inline](images/configure-the-project.png)
 
----
 
 ## Getting around Android Studio
-- Project panel
-- Run button
-- Emulator
 
----
+- Project panel
+- Emulator
+- Run button
+
+
+## Enable developer options on your device!
+
+- For participants with Android devices, go to: ```Settings > About phone > Build Number``` 
+- Tap build number seven times. You’ll see a message saying “You are now a developer!”
+- When you connect your device to your laptop, click **OK** on the alert that pops up.
+
 
 ## Edit the layout
 
@@ -31,16 +46,41 @@ Build a NYTimes app using the [public API](https://developer.nytimes.com/).
 - Find the text that says "Hello World!"
 - Replace it with your own message and run the app
 
----
+
+## The activity lifecycle
+
+In MainActivity.kt
+
+```kotlin
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        Log.d("MainActivity", "onCreate() called. The activity is being freshly created.")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("MainActivity", "onPause() called. The activity is going in to the background.")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("MainActivity", "onResume() called. The activity is coming back from the background.")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("MainActivity", "onDestroy() called. The activity is going away forever.")
+    }
+```
 
 ## Displaying a list
 
 - From activity_main.xml, open the "Design" tab
 - Delete the `TextView`
 - Drag to add a `RecyclerView`
-- Give it an id: `recycler_view`
+- Give it an id: `recyclerView`
 
----
 
 ## Creating an adapter
 
@@ -52,20 +92,19 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
     class NewsViewHolder(val headline: TextView) : RecyclerView.ViewHolder(headline)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
-
+        // Called when a new, empty view is created
     }
 
     override fun getItemCount(): Int {
-
+        // Tells the recycler view how many items to display
     }
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
-
+        // Called when a view is about to be scrolled on to the screen
     }
 }
 ```
 
----
 
 ## Create a viewholder with a view to display the headline
 
@@ -73,13 +112,13 @@ In NewsAdapter.kt
 
 ```kotlin
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
+        // Called when a new, empty view is created
         val headlineTextView = TextView(parent.context)
         return NewsViewHolder(headlineTextView)
     }
 
 ```
 
----
 
 ## Create a list of data to bind with the adapter
 
@@ -94,7 +133,6 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 }
 ```
 
----
 
 ## We want to display as many headline items as there are news items
 
@@ -102,11 +140,11 @@ In NewsAdapter.kt
 
 ```kotlin
     override fun getItemCount(): Int {
+        // Tells the recycler view how many items to display
         return news.size
     }
 ```
 
----
 
 ## When an item is scrolled onto the screen, show the headline
 
@@ -114,11 +152,11 @@ In NewsAdapter.kt
 
 ```kotlin
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
+        // Called when a view is about to be scrolled on to the screen
         holder.headline.text = news[position]
     }
 ```
 
----
 
 ## Setting up the RecyclerView
 
@@ -130,13 +168,11 @@ In MainActivity.kt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        recyclerView = findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = NewsAdapter()
     }
 ```
 
----
 
 ## Allow the news to be set from outside of the adapter
 
@@ -169,7 +205,6 @@ In MainActivity.kt
     }
 ```
 
----
 
 ## Make a nicer layout
 
@@ -180,7 +215,6 @@ In MainActivity.kt
 
 ![70% right](images/nicer-layout.png)
 
----
 
 ## Inflate the layout in the adapter
 
@@ -196,24 +230,24 @@ class NewsAdapter(val context: Context) : RecyclerView.Adapter<NewsAdapter.NewsV
     //...
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
+        // Called when a new, empty view is created
         val view = inflater.inflate(R.layout.item_news, parent, false)
         return NewsViewHolder(view)
     }
 
 ```
 
----
 
 ## Bind the data to the new layout
 
 
 ```kotlin
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
+        // Called when a view is about to be scrolled on to the screen
         holder.itemView.headline.text = news[position]
     }
 ```
 
----
 
 ## Create a data class to represent a news story
 
@@ -229,7 +263,6 @@ data class NewsStory(
 )
 ```
 
----
 
 ## Update the adapter to handle the new data class
 
@@ -245,7 +278,6 @@ In NewsAdapter.kt
 
 ```
 
----
 
 ## Bind the new data to the new layout
 
@@ -253,12 +285,12 @@ In NewsAdapter.kt
 
 ```kotlin
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
+        // Called when a view is about to be scrolled on to the screen
         holder.itemView.headline.text = news[position].headline
         holder.itemView.summary.text = news[position].summary
     }
 ```
 
----
 
 ## Update the data being passed to the adapter
 
@@ -296,13 +328,11 @@ In MainActivity.kt
 
 ```
 
----
 
 ## Load the image URL in the ImageView
 
 We'll use a third-party image loading library called [Picasso](https://square.github.io/picasso/).
 
----
 
 ## Add the Picasso dependency
 
@@ -318,7 +348,6 @@ dependencies {
 
 Then do a Gradle sync.
 
----
 
 ## Add internet permission
 
@@ -333,7 +362,6 @@ In AndroidManifest.xml
     //...
 ```
 
----
 
 ## Load the image URL in the ImageView
 
@@ -348,7 +376,6 @@ In NewsAdapter.kt
     }
 ```
 
----
 
 ## Make a toast when a story is clicked
 
@@ -364,14 +391,12 @@ In NewsAdapter.kt
     }
 ```
 
----
 
 ## Create a new activity to show a story
 
 * Create a new "Empty Activity" called StoryActivity
 * Add a WebView to `activity_story.xml`
 
----
 
 ## Navigate to the activity when a story is clicked
 
@@ -386,7 +411,6 @@ In NewsAdapter.kt
 
 ```
 
----
 
 ## Load the URL in the WebView
 
@@ -401,209 +425,3 @@ In StoryActivity.kt
     }
 
 ```
-
----
-
-## Let's get some real data!
-
-We want to...
-
-* Make a network request to the NYTimes Public API
-* Get back a list of items ranked in Top Stories
-* Parse these items to display in our RecyclerView
-
----
-
-## Some tools we'll use
-
-* OkHttp - HTTP client for Android/Java/Kotlin.
-* Retrofit - adapts REST interfaces so they can be treated like callable Java/Kotlin objects.
-* Moshi - parses JSON in Java/Kotlin data objects.
-* Coroutines - Kotlin language-level support for writing asynchronous code.
-
----
-
-## Add the kapt plugin
-
-In app/build.gradle
-
-```groovy
-apply plugin: 'kotlin-kapt'
-```
-
----
-
-## Add the dependencies
-
-In app/build.gradle
-
-```groovy
-dependencies {
-    //...
-
-    def okhttp3_version = "3.12.0"
-    def retrofit2_version = "2.5.0"
-    def moshiVersion="1.8.0"
-    def kotlinCoroutineVersion = "1.0.1"
-
-    // OkHttp
-    implementation "com.squareup.okhttp3:okhttp:$okhttp3_version"
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
-    
-    // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:$retrofit2_version"
-    implementation "com.squareup.retrofit2:converter-moshi:$retrofit2_version"
-    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
-    
-    // Moshi
-    implementation "com.squareup.moshi:moshi-kotlin:$moshiVersion"
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion"
-
-    // Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutineVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutineVersion"
-}
-```
-
----
-
-## Add the API key in a file that is not checked in to source control
-
-In local.properties
-
-```groovy
-//...
-apikey="paste the api key here"
-```
-
----
-
-## Compile the key into the project
-
-In app/build.gradle
-
-```groovy
-def localProperties = new Properties()
-localProperties.load(new FileInputStream(rootProject.file("local.properties")))
-
-android {
-	//...
-    defaultConfig {
-    	//...
-        buildConfigField "String", "API_KEY", localProperties['apiKey']
-    }
-
-}
-
-```
-
----
-
-## Create Kotlin data classes to represent the API response
-
-Create a new class Section.kt
-
-```kotlin
-@JsonClass(generateAdapter = true)
-data class Section(val results: List<Result>)
-
-@JsonClass(generateAdapter = true)
-data class Result(val title: String,
-                  val abstract: String,
-                  val url: String,
-                  val multimedia: List<Multimedia>)
-
-@JsonClass(generateAdapter = true)
-data class Multimedia(val format: String,
-                      val url: String)
-```
-
---- 
-
-## Create a Kotlin interface to represent the Top Stories API
-
-Create a new class TopStoriesApi.kt
-
-```kotlin
-interface TopStoriesApi {
-
-    @GET("/svc/topstories/v2/{section}.json")
-    fun getSection(
-        @Path("section") section: String,
-        @Query("api-key") apiKey: String
-    ): Deferred<Response<Section>>
-}
-```
-
----
-
-## Create a singleton factory to provide an instance of TopStoriesApi
-
-In TopStoriesApi.kt
-
-```kotlin
-object ApiFactory {
-    fun retrofit(): Retrofit = Retrofit.Builder()
-        .client(OkHttpClient().newBuilder().build())
-        .baseUrl("https://api.nytimes.com")
-        .addConverterFactory(MoshiConverterFactory.create())
-        .addCallAdapterFactory(CoroutineCallAdapterFactory())
-        .build()
-
-    val topStoriesApi: TopStoriesApi = retrofit().create(TopStoriesApi::class.java)
-}
-```
-
----
-
-## Launch a coroutine to make the post request
-
-In MainActivity.kt
-
-```kotlin
-    fun updateNews() {
-        val service = ApiFactory.topStoriesApi
-        GlobalScope.launch(Dispatchers.Main) {
-            val postRequest = service.getSection("science", BuildConfig.API_KEY)
-            
-        }
-    }
-```
-
----
-
-## Execute the request and show an error if something goes wrong
-
-```kotlin
-
-In MainActivity.kt
-
-val postRequest = service.getSection("science", BuildConfig.API_KEY)
-try {
-    val response = postRequest.await()
-    
-} catch (e: Exception) {
-    Toast.makeText(baseContext, "Something went wrong.", Toast.LENGTH_LONG).show()
-}
-
-```
----
-
-## Convert the data from the response so that it can be used by the NewsAdapter
-
-In MainActivity.kt
-
-```kotlin
-val response = postRequest.await()
-response.body()?.let { section ->
-	val news = section.results.map { result ->
-		NewsStory(headline = result.title,
-			summary = result.abstract,
-			imageUrl = result.multimedia.firstOrNull { it.format == "superJumbo" }?.url,
-			clickUrl = result.url)
-	}
-	adapter.updateNews(news)
-}
-```
-
----
