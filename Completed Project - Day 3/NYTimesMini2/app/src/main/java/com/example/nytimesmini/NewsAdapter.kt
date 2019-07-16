@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_news.view.*
@@ -45,6 +46,16 @@ class NewsAdapter(val context: Context) : RecyclerView.Adapter<NewsAdapter.NewsV
             val intent = Intent(holder.itemView.context, ArticleActivity::class.java)
             intent.putExtra("url", news[position].clickUrl)
             holder.itemView.context.startActivity(intent)
+        }
+
+        holder.itemView.shareButton.setOnClickListener {
+            val url = news[position].clickUrl
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, "Check out this NYTimes article: $url")
+                type = "text/plain"
+            }
+            holder.itemView.context.startActivity(Intent.createChooser(sendIntent, "Share this article to:"))
         }
     }
 
