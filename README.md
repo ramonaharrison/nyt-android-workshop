@@ -1,7 +1,7 @@
 # Android Development Workshop
 
-- Monday 2 - 4 p.m.: Intro to Android Development - 15W2-115 - [Zip of the completed project](NYTimesMini2.zip)
-- Tuesday 2 - 4 p.m.: Kotlin for Android Development - 15W2-115
+- Monday 2 - 4 p.m.: Intro to Android Development - 15W2-115 - [Zip of the completed project](Completed%20Project%20-%20Day%201/NYTimesMini2.zip)
+- Tuesday 2 - 4 p.m.: Kotlin for Android Development - 15W2-115 - [Zip of the completed project](Completed%20Project%20-%20Day%202/NYTimesMini2.zip)
 - Wednesday 2 - 4 p.m.: Advanced Android - 12E2-140
 
 *Office hours from 4 - 5 pm each day.*
