@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- add hex values for your preferred app colors-->
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#D3D3D3</color>
+    <color name="colorAccent">#FFD300</color>
+</resources>

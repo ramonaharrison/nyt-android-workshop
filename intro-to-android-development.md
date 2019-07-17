@@ -533,32 +533,7 @@ In StoryActivity.kt
 
 ---
 
-# The activity lifecycle
-
-In MainActivity.kt
-
-```kotlin
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        Log.d("MainActivity", "onCreate() called. The activity is being freshly created.")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("MainActivity", "onPause() called. The activity is going in to the background.")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("MainActivity", "onResume() called. The activity is coming back from the background.")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("MainActivity", "onDestroy() called. The activity is going away forever.")
-    }
-```
+# Day 2
 
 ---
 
@@ -869,3 +844,30 @@ In MainActivity.kt
 
     }
 ```
+
+---
+
+# Day 3
+
+---
+
+# Change the app style
+
+In colors.xml
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- add hex values for your preferred app colors-->
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#D3D3D3</color>
+    <color name="colorAccent">#FFD300</color>
+</resources>
+```
+
+---
+
+# Add save and share icons
+
+
+---
