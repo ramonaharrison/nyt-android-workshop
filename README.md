@@ -997,4 +997,35 @@ In NewsAdapter.kt
         }
 ```
 
+## Add a Saved section to the tabs
+
+In MainActivity.kt
+
+```kotlin
+    val sections = mapOf(
+        "Home" to "home",
+        "Opinion" to "opinion",
+        "Food" to "food",
+        "Science" to "science",
+        "Travel" to "travel",
+        "Saved" to "saved"
+    )
+```
+
+## Load the saved items
+
+In MainActivity.kt
+
+```kotlin
+    fun updateNews(path: String) {
+        if (path == "saved") {
+            GlobalScope.launch(Dispatchers.Main) {
+                val news = SaveManager.getSavedStories()
+                adapter.updateNews(news)
+            }
+        } else {
+            val service = ApiFactory.topStoriesApi
+            //...
+```
+
 
