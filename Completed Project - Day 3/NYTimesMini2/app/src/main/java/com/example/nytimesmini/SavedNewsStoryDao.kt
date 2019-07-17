@@ -8,14 +8,14 @@ import androidx.room.Query
 @Dao
 interface SavedNewsStoryDao {
     @Query("SELECT * FROM saved_news_stories")
-    fun getAll(): List<SavedNewsStory>
+    suspend fun getAll(): List<SavedNewsStory>
 
     @Query("SELECT * FROM saved_news_stories WHERE click_url LIKE :clickUrl")
-    fun get(clickUrl: String): List<SavedNewsStory>
+    suspend fun get(clickUrl: String): List<SavedNewsStory>
 
     @Insert
-    fun insert(story: SavedNewsStory)
+    suspend fun insert(story: SavedNewsStory)
 
     @Delete
-    fun delete(story: SavedNewsStory)
+    suspend fun delete(story: SavedNewsStory)
 }

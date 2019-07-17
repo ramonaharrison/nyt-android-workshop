@@ -808,24 +808,7 @@ object SaveManager {
     }
 }
 ```
-
-# Update the saved stories list when a Save button is clicked
-
-In NewsAdapter.kt
-
-```kotlin
-        holder.itemView.saveButton.setOnClickListener {
-            if (SaveManager.isSaved(newsStory)) {
-                SaveManager.unsave(newsStory)
-                holder.itemView.saveButton.setColorFilter(Color.BLACK)
-            } else {
-                SaveManager.save(newsStory)
-                holder.itemView.saveButton.setColorFilter(Color.MAGENTA)
-            }
-        }
-```
-
-## Update the icon color when an saved item is scrolled back onto the screen
+## Update the icon color when an saved item is scrolled onto the screen
 
 In NewsAdapter.kt
 
@@ -841,6 +824,22 @@ In NewsAdapter.kt
     }
 ```
 
+# Update the saved stories list when a Save button is clicked
+
+In NewsAdapter.kt
+
+```kotlin
+		//...
+        holder.itemView.saveButton.setOnClickListener {
+            if (SaveManager.isSaved(newsStory)) {
+                SaveManager.unsave(newsStory)
+            } else {
+                SaveManager.save(newsStory)
+            }
+            notifyItemChanged(position)
+        }
+```
+
 ## Add Room dependencies
 
 In app/build.gradle
@@ -853,7 +852,7 @@ dependencies {
     def room_version = "2.1.0"
 
     implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
 }
 ```
@@ -865,12 +864,35 @@ Create a new class `SavedNewsStory.kt`
 ```kotlin
 @Entity(tableName = "saved_news_stories")
 data class SavedNewsStory(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "headline") val headline: String,
     @ColumnInfo(name = "summary") val summary: String,
     @ColumnInfo(name = "image_url") val imageUrl: String?,
     @ColumnInfo(name = "click_url") val clickUrl: String
 )
+```
+
+## Create some extension functions to convert between NewsStory and SavedNewsStory
+
+In SaveManager.kt
+
+```kotlin
+    fun NewsStory.toSavedVersion() : SavedNewsStory {
+        return SavedNewsStory(
+            headline = this.headline,
+            summary = this.summary,
+            imageUrl = this.imageUrl,
+            clickUrl = this.clickUrl)
+    }
+
+
+    fun SavedNewsStory.toNewsStory() : NewsStory {
+        return NewsStory(
+            headline = this.headline,
+            summary = this.summary,
+            imageUrl = this.imageUrl,
+            clickUrl = this.clickUrl)
+    }
 ```
 
 ## Create a data access object (DAO) to interact with the entity
@@ -881,16 +903,16 @@ Create a new class SavedNewsStoryDao.kt
 @Dao
 interface SavedNewsStoryDao {
     @Query("SELECT * FROM saved_news_stories")
-    fun getAll(): List<SavedNewsStory>
+    suspend fun getAll(): List<SavedNewsStory>
 
     @Query("SELECT * FROM saved_news_stories WHERE click_url LIKE :clickUrl")
-    fun get(clickUrl: String): List<SavedNewsStory>
+    suspend fun get(clickUrl: String): List<SavedNewsStory>
 
     @Insert
-    fun insert(story: SavedNewsStory)
+    suspend fun insert(story: SavedNewsStory)
 
     @Delete
-    fun delete(story: SavedNewsStory)
+    suspend fun delete(story: SavedNewsStory)
 }
 ```
 
@@ -926,7 +948,53 @@ Call `initDatabase(applicationContext)` right below `setContentView` in `MainAct
 
 ## Use the database instead of the list to keep track of saved items
 
+In SaveManager.kt
 
+```kotlin
+    suspend fun save(newsStory: NewsStory) {
+        database.storyDao().insert(newsStory.toSavedNewsStory())
+    }
 
+    suspend fun unsave(newsStory: NewsStory) {
+        database.storyDao().delete(newsStory.toSavedNewsStory())
+    }
+
+    suspend fun isSaved(newsStory: NewsStory): Boolean {
+        return database.storyDao().get(newsStory.clickUrl).isNotEmpty()
+    }
+
+    suspend fun getSavedStories(): List<NewsStory> {
+        return database.storyDao().getAll().map { savedNewsStory -> savedNewsStory.toNewsStory() }
+    }
+```
+
+## Update the adapter to launch a coroutine when it interacts with the SaveManager
+
+In NewsAdapter.kt
+
+```kotlin
+        GlobalScope.launch(Dispatchers.Main) {
+            val isSaved = SaveManager.isSaved(newsStory)
+
+            if (isSaved) {
+                holder.itemView.saveButton.setColorFilter(Color.MAGENTA)
+            } else {
+                holder.itemView.saveButton.setColorFilter(Color.BLACK)
+            }
+        }
+
+        holder.itemView.saveButton.setOnClickListener {
+            GlobalScope.launch(Dispatchers.Main) {
+                val isSaved = SaveManager.isSaved(newsStory)
+
+                if (isSaved) {
+                    SaveManager.unsave(newsStory)
+                } else {
+                    SaveManager.save(newsStory)
+                }
+                notifyItemChanged(position)
+            }
+        }
+```
 
 

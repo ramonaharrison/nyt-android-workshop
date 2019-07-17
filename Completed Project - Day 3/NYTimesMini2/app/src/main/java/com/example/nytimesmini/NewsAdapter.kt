@@ -12,6 +12,10 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_news.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class NewsAdapter(val context: Context) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
@@ -61,20 +65,27 @@ class NewsAdapter(val context: Context) : RecyclerView.Adapter<NewsAdapter.NewsV
             holder.itemView.context.startActivity(Intent.createChooser(sendIntent, "Share this article to:"))
         }
 
-        holder.itemView.saveButton.setOnClickListener {
-            if (SaveManager.isSaved(newsStory)) {
-                SaveManager.unsave(newsStory)
-                holder.itemView.saveButton.setColorFilter(Color.BLACK)
-            } else {
-                SaveManager.save(newsStory)
+        GlobalScope.launch(Dispatchers.Main) {
+            val isSaved = SaveManager.isSaved(newsStory)
+
+            if (isSaved) {
                 holder.itemView.saveButton.setColorFilter(Color.MAGENTA)
+            } else {
+                holder.itemView.saveButton.setColorFilter(Color.BLACK)
             }
         }
 
-        if (SaveManager.isSaved(newsStory)) {
-            holder.itemView.saveButton.setColorFilter(Color.MAGENTA)
-        } else {
-            holder.itemView.saveButton.setColorFilter(Color.BLACK)
+        holder.itemView.saveButton.setOnClickListener {
+            GlobalScope.launch(Dispatchers.Main) {
+                val isSaved = SaveManager.isSaved(newsStory)
+
+                if (isSaved) {
+                    SaveManager.unsave(newsStory)
+                } else {
+                    SaveManager.save(newsStory)
+                }
+                notifyItemChanged(position)
+            }
         }
     }
 
