@@ -19,7 +19,8 @@ class MainActivity : AppCompatActivity() {
         "Opinion" to "opinion",
         "Food" to "food",
         "Science" to "science",
-        "Travel" to "travel"
+        "Travel" to "travel",
+        "Saved" to "saved"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,25 +63,32 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun updateNews(path: String) {
-        val service = ApiFactory.topStoriesApi
-        GlobalScope.launch(Dispatchers.Main) {
-            val postRequest = service.getSection(path, BuildConfig.API_KEY)
-            try {
-                val response = postRequest.await()
-                response.body()?.let { section ->
-                    val news = section.results.map { result ->
-                        NewsStory(
-                            headline = result.title,
-                            summary = result.abstract,
-                            imageUrl = result.multimedia.firstOrNull { it.format == "superJumbo" }?.url,
-                            clickUrl = result.url
-                        )
+        if (path == "saved") {
+            GlobalScope.launch(Dispatchers.Main) {
+                val news = SaveManager.getSavedStories()
+                adapter.updateNews(news)
+            }
+        } else {
+            val service = ApiFactory.topStoriesApi
+            GlobalScope.launch(Dispatchers.Main) {
+                val postRequest = service.getSection(path, BuildConfig.API_KEY)
+                try {
+                    val response = postRequest.await()
+                    response.body()?.let { section ->
+                        val news = section.results.map { result ->
+                            NewsStory(
+                                headline = result.title,
+                                summary = result.abstract,
+                                imageUrl = result.multimedia.firstOrNull { it.format == "superJumbo" }?.url,
+                                clickUrl = result.url
+                            )
+                        }
+                        adapter.updateNews(news)
                     }
-                    adapter.updateNews(news)
-                }
 
-            } catch (e: Exception) {
-                Toast.makeText(baseContext, "Something went wrong.", Toast.LENGTH_LONG).show()
+                } catch (e: Exception) {
+                    Toast.makeText(baseContext, "Something went wrong.", Toast.LENGTH_LONG).show()
+                }
             }
         }
     }
