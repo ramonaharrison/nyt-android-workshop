@@ -824,7 +824,7 @@ In NewsAdapter.kt
     }
 ```
 
-# Update the saved stories list when a Save button is clicked
+## Update the saved stories list when a Save button is clicked
 
 In NewsAdapter.kt
 
@@ -1027,5 +1027,17 @@ In MainActivity.kt
             val service = ApiFactory.topStoriesApi
             //...
 ```
+
+# You made it!
+
+![](images/jetpack.png)
+
+# Resources for learning more
+
+- Udacity's Android Fundamentals - online Android bootcamp with a free version: https://www.udacity.com/course/new-android-fundamentals--ud851
+- Google's Android Codelabs - online project tutorials that walk you through how to build various Android apps or features : https://developer.android.com/courses/fundamentals-training/toc-v2
+- Kotlin Koans - small puzzles designed to teach you about various Kotlin languages features (best if you're already familiar with at least one other programming language): https://kotlinlang.org/docs/tutorials/koans.html
+- Big Nerd Ranch Android Intensive Bootcamp - in-person weeklong intensive Android bootcamp: https://www.bignerdranch.com/catalogue/6-android-and-kotlin-essentials/
+
 
 
