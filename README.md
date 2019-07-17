@@ -679,4 +679,254 @@ In MainActivity.kt
     }
 ```
 
+# Day 3
+
+## Change the app colors
+
+In colors.xml
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- add hex values for your preferred app colors-->
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#D3D3D3</color>
+    <color name="colorAccent">#FFD300</color>
+</resources>
 ```
+
+## Add a save and share icon to each item
+
+In item_news.xml, below the summary `TextView`
+
+```kotlin
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_favorite_black_24dp"
+            android:id="@+id/saveButton" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/summary" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_share_black_24dp"
+            android:id="@+id/shareButton"
+            app:layout_constraintStart_toEndOf="@+id/saveButton" android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/summary"/>
+```
+
+## Refactor `onBindViewHolder`
+
+In NewsAdapter.kt, clean up the `onBindViewHolder()` function
+
+```kotlin
+    override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
+        val newsStory = news[position]
+
+        holder.itemView.headline.text = newsStory.headline
+        holder.itemView.summary.text = newsStory.summary
+
+        Picasso.get().load(newsStory.imageUrl).into(holder.itemView.imageView)
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView.context, ArticleActivity::class.java)
+            intent.putExtra("url", newsStory.clickUrl)
+            holder.itemView.context.startActivity(intent)
+        }
+    }
+```
+
+## Add a click listener for the Share button
+
+In NewsAdapter.kt
+
+```kotlin
+    override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
+        //...
+
+        holder.itemView.shareButton.setOnClickListener {
+            val url = newsStory.clickUrl
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, "Check out this NYTimes article: $url")
+                type = "text/plain"
+            }
+            holder.itemView.context.startActivity(Intent.createChooser(sendIntent, "Share this article to:"))
+        }
+    }
+```
+
+## Add a click listener for the Save button
+
+In NewsAdapter.kt
+
+```kotlin
+    override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
+        holder.itemView.saveButton.setOnClickListener {
+            holder.itemView.saveButton.setColorFilter(Color.MAGENTA)
+        }
+    }
+```
+
+## Create a class to manage which news stories are saved
+
+Create a new singleton object SaveManager.kt
+
+```kotlin
+object SaveManager {
+
+    fun save(newsStory: NewsStory) {}
+
+    fun unsave(newsStory: NewsStory) {}
+
+    fun isSaved(newsStory: NewsStory) : Boolean {}
+
+    fun getSavedStories() : List<NewsStory> {}
+}
+```
+
+## For now, just use an in-memory list to keep track of saved items
+
+```kotlin
+object SaveManager {
+
+    private val savedStories = ArrayList<NewsStory>()
+
+    fun save(newsStory: NewsStory) {
+        savedStories.add(newsStory)
+    }
+
+    fun unsave(newsStory: NewsStory) {
+        savedStories.remove(newsStory)
+    }
+
+    fun isSaved(newsStory: NewsStory) : Boolean {
+        return savedStories.contains(newsStory)
+    }
+
+    fun getSavedNewsStories() : List<NewsStory> {
+        return savedStories.toList()
+    }
+}
+```
+
+# Update the saved stories list when a Save button is clicked
+
+In NewsAdapter.kt
+
+```kotlin
+        holder.itemView.saveButton.setOnClickListener {
+            if (SaveManager.isSaved(newsStory)) {
+                SaveManager.unsave(newsStory)
+                holder.itemView.saveButton.setColorFilter(Color.BLACK)
+            } else {
+                SaveManager.save(newsStory)
+                holder.itemView.saveButton.setColorFilter(Color.MAGENTA)
+            }
+        }
+```
+
+## Update the icon color when an saved item is scrolled back onto the screen
+
+In NewsAdapter.kt
+
+```kotlin
+    override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
+    	//...
+
+        if (SaveManager.isSaved(newsStory)) {
+            holder.itemView.saveButton.setColorFilter(Color.MAGENTA)
+        } else {
+            holder.itemView.saveButton.setColorFilter(Color.BLACK)
+        }
+    }
+```
+
+## Add Room dependencies
+
+In app/build.gradle
+
+```groovy
+dependencies {
+    //...
+
+    // Room
+    def room_version = "2.1.0"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+}
+```
+
+## Define an entity for saved news stories
+
+Create a new class `SavedNewsStory.kt`
+
+```kotlin
+@Entity(tableName = "saved_news_stories")
+data class SavedNewsStory(
+    @PrimaryKey(autoGenerate = true) val id: Int,
+    @ColumnInfo(name = "headline") val headline: String,
+    @ColumnInfo(name = "summary") val summary: String,
+    @ColumnInfo(name = "image_url") val imageUrl: String?,
+    @ColumnInfo(name = "click_url") val clickUrl: String
+)
+```
+
+## Create a data access object (DAO) to interact with the entity
+
+Create a new class SavedNewsStoryDao.kt
+
+```kotlin
+@Dao
+interface SavedNewsStoryDao {
+    @Query("SELECT * FROM saved_news_stories")
+    fun getAll(): List<SavedNewsStory>
+
+    @Query("SELECT * FROM saved_news_stories WHERE click_url LIKE :clickUrl")
+    fun get(clickUrl: String): List<SavedNewsStory>
+
+    @Insert
+    fun insert(story: SavedNewsStory)
+
+    @Delete
+    fun delete(story: SavedNewsStory)
+}
+```
+
+## Define your database with the entity and dao
+
+Create a new file SavedNewsStoryDatabase.kt
+
+```kotlin
+@Database(entities = arrayOf(SavedNewsStory::class), version = 1)
+abstract class SavedNewsStoryDatabase : RoomDatabase() {
+    abstract fun storyDao(): SavedNewsStoryDao
+}
+```
+
+## Create a reference to the database
+
+In SaveManager.kt
+
+```kotlin
+object SaveManager {
+    lateinit var database: SavedNewsStoryDatabase
+
+    fun initDatabase(applicationContext: Context) {
+        database = Room.databaseBuilder(
+            applicationContext,
+            SavedNewsStoryDatabase::class.java, "saved-news-story-db"
+        ).build()
+    }
+}
+```
+
+Call `initDatabase(applicationContext)` right below `setContentView` in `MainActivity.onCreate()`.
+
+## Use the database instead of the list to keep track of saved items
+
+
+
+
+
